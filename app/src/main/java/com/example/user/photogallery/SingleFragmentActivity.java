@@ -15,7 +15,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     @LayoutRes
     protected int getLayoutResId() {
-        return  R.layout.activity_photo_gallery_recycler;
+        return  R.layout.activity_fragment;
     }
 
     @Override
