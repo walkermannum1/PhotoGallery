@@ -3,6 +3,9 @@ package com.example.user.photogallery;
 import android.net.Uri;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +50,14 @@ public class PhotoFetcher {
 
     public void fetchItems() {
         try {
-            String url = Uri.parse("http://api.flickr.com/services/rest/").buildUpon().appendQueryParameter("method", "flickr.photos.getPeople")
-                    .appendQueryParameter("api_key",API_KEY).appendQueryParameter("format", "json").appendQueryParameter("nojsoncallback", "1")
+            String url = Uri.parse("http://api.flickr.com/services/rest/").buildUpon().appendQueryParameter("method", "flickr.photos.getRecent")
+                    .appendQueryParameter("api_key", API_KEY).appendQueryParameter("format", "json").appendQueryParameter("nojsoncallback", "1")
                     .appendQueryParameter("extras", "url_s").build().toString();
             String jsonString = getUrlString(url);
             Log.i(TAG, "Received JSON: " + jsonString);
+            JSONObject jsonBody = new JSONObject(jsonString);
+        } catch (JSONException je) {
+            Log.e(TAG, "Failed to parse JSON", je);
         } catch (IOException ioe) {
             Log.e(TAG, "Failed to fetch items", ioe);
         }
