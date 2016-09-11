@@ -134,7 +134,13 @@ public class PhotoGalleryFragment extends Fragment {
 
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
-            return new PhotoFetcher().fetchItems();
+            String query = "Obama";//Just for testing
+
+            if (query == null) {
+                return new PhotoFetcher().fetchRecentPhotos();
+            } else {
+                return new PhotoFetcher().searchPhotos(query);
+            }
 
         }
 
