@@ -24,6 +24,9 @@ public class PollService extends IntentService {
     private static final String TAG = "PollService";
     private static final long POLL_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
+    public static final String ACTION_SHOW_NOTIFICATION = "com.example.user.photogallery.SHOW_NOTIFICATION";
+    public static final String PREM_PRIVATE = "com.example.user.photogallery.PRIVATE";
+
     public static Intent newIntent(Context context){
         return new Intent(context, PollService.class);
     }
@@ -78,22 +81,22 @@ public class PollService extends IntentService {
             Log.i(TAG, "Got an old result: " + resultId);
         } else {
             Log.i(TAG, "Got a new result: " + resultId);
+            Resources resources = getResources();
+            Intent i = PhotoGalleryActivity.newIntent(this);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setTicker(resources.getString(R.string.new_pictures_title))
+                    .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                    .setContentTitle(resources.getString(R.string.new_pictures_title))
+                    .setContentText(resources.getString(R.string.new_pictures_text))
+                    .setContentIntent(pi).setAutoCancel(true).build();
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(0, notification);
+
+            sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION), PREM_PRIVATE);
         }
-
-        Resources resources = getResources();
-        Intent i = PhotoGalleryActivity.newIntent(this);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-
-        Notification notification = new NotificationCompat.Builder(this)
-                .setTicker( resources.getString(R.string.new_pictures_title))
-                .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle(resources.getString(R.string.new_pictures_title))
-                .setContentText(resources.getString(R.string.new_pictures_text))
-                .setContentIntent(pi).setAutoCancel(true).build();
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(0, notification);
-
         QueryPreferences.setLastResultId(this, resultId);
     }
 
