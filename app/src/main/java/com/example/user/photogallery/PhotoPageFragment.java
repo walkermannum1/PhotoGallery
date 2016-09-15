@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * Created by guang on 2016/9/15.
@@ -36,6 +37,13 @@ public class PhotoPageFragment extends VisibleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_photo_page, container, false);
         mWebView = (WebView) v.findViewById(R.id.fragment_photo_page_web_view);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        mWebView.loadUrl(mUri.toString());
         return v;
     }
 }
