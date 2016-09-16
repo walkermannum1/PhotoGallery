@@ -40,12 +40,12 @@ public class PhotoPageFragment extends VisibleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_photo_page, container, false);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.fragment_photo_page_progress_bar);
+        mProgressBar = (ProgressBar)v.findViewById(R.id.fragment_photo_page_progress_bar);
         mProgressBar.setMax(100);
         mWebView = (WebView) v.findViewById(R.id.fragment_photo_page_web_view);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressBarChanged(WebView webView, int newProgress) {
+            public void onProgressChanged(WebView webView, int newProgress) {
                 if (newProgress == 100) {
                     mProgressBar.setVisibility(View.GONE);
                 }else {
